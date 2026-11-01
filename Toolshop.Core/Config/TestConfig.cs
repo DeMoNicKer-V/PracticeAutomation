@@ -2,7 +2,7 @@
 
 namespace Toolshop.Core.Config;
 
-public static class ToolshopConfig
+public static class TestConfig
 {
     private static readonly Lazy<ToolshopSettings> _settings = new Lazy<ToolshopSettings>(InitSettings);
 
@@ -12,7 +12,8 @@ public static class ToolshopConfig
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+            .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: false)
             .AddEnvironmentVariables()
             .Build();
         
@@ -20,13 +21,9 @@ public static class ToolshopConfig
 
         if (settings == null)
         {
-            throw new InvalidOperationException("Секция конфигурации 'ToolshopSettings' не найдена.");
+            throw new InvalidOperationException("'ToolshopSettings' configuration section is missing");
         }
-        
-        ArgumentNullException.ThrowIfNullOrEmpty(settings.UIBaseUrl);
-        ArgumentNullException.ThrowIfNullOrEmpty(settings.ApiBaseUrl);
-        ArgumentNullException.ThrowIfNullOrEmpty(settings.customer.Email);
-        ArgumentNullException.ThrowIfNullOrEmpty(settings.customer.Password);
+        settings.Validate();
 
         return settings;
     }
