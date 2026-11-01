@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Toolshop.Core/Toolshop.Core.csproj" />
+  <Project Path="Toolshop.Tests.Api/Toolshop.Tests.Api.csproj" />
+  <Project Path="Toolshop.Tests.UI/Toolshop.Tests.UI.csproj" />
+</Solution>
