@@ -12,21 +12,19 @@ public class GetProductByIdTests : ApiTestBase
         //Arrange
         var response = await Api.Products.GetProductsAsync();
 
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
-        Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe);
         var productsList = response.Data!;
         Assert.That(productsList.Data, Is.Not.Empty);
         var firstProduct = productsList.Data[0];
 
         //Act
         var productByIdResponse = await Api.Products.GetProductByIdAsync(firstProduct.Id);
+
+        //Assert
         Assert.That(productByIdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {productByIdResponse.StatusCode},  response message: {productByIdResponse.ErrorMessage},  content: {productByIdResponse.Content}");
-        Assert.That(productByIdResponse.Data, Is.Not.Null, productByIdResponse.ErrorMessage);
+            productByIdResponse.Describe());
 
         var productById = productByIdResponse.Data!;
-        //Assert
         using (Assert.EnterMultipleScope())
         {
             Assert.That(productById.Id, Is.EqualTo(firstProduct.Id));
@@ -46,8 +44,7 @@ public class GetProductByIdTests : ApiTestBase
         var response = await Api.Products.GetProductByIdAsync(nonExistentId);
 
         //Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound),
-            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound), response.Describe);
         Assert.That(response.GetError()?.Message, Is.EqualTo(ErrorsText.ItemNotFound));
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Toolshop.Core.Api.Extensions;
 
 namespace Toolshop.Tests.Api.Tests.Products;
 
@@ -11,11 +12,10 @@ public class GetProductsTests : ApiTestBase
         var response = await Api.Products.GetProductsAsync();
 
         // Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
         Assert.That(response.Data, Is.Not.Null);
         var page = response.Data!;
-        Assert.That(page.Data, Is.Empty);
+        Assert.That(page.Data, Is.Not.Empty);
 
         using (Assert.EnterMultipleScope())
         {
@@ -30,8 +30,7 @@ public class GetProductsTests : ApiTestBase
     {
         //Arrange
         var firstResponse = await Api.Products.GetProductsAsync();
-        Assert.That(firstResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {firstResponse.StatusCode},  response message: {firstResponse.ErrorMessage},  content: {firstResponse.Content}");
+        Assert.That(firstResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK), firstResponse.Describe());
         Assert.That(firstResponse.Data, Is.Not.Null, firstResponse.ErrorMessage);
         var lastPage = firstResponse.Data!.LastPage;
 
@@ -39,9 +38,7 @@ public class GetProductsTests : ApiTestBase
         var secondResponse = await Api.Products.GetProductsAsync(lastPage + 1);
 
         //Assert
-        Assert.That(secondResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {secondResponse.StatusCode},  response message: {secondResponse.ErrorMessage},  content: {secondResponse.Content}");
-
+        Assert.That(secondResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK), secondResponse.Describe());
         Assert.That(secondResponse.Data, Is.Not.Null, secondResponse.ErrorMessage);
         Assert.That(secondResponse.Data!.Data, Is.Empty);
     }
@@ -54,9 +51,8 @@ public class GetProductsTests : ApiTestBase
         var response = await Api.Products.GetProductsAsync(page);
 
         //Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
         Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
-        Assert.That(response.Data.CurrentPage, Is.EqualTo(1));
+        Assert.That(response.Data!.CurrentPage, Is.EqualTo(1));
     }
 }

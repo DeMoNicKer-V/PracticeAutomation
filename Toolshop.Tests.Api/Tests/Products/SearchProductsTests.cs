@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Toolshop.Core.Api.Extensions;
 
 namespace Toolshop.Tests.Api.Tests.Products;
 
@@ -12,7 +13,7 @@ public class SearchProductsTests : ApiTestBase
         var response = await Api.Products.SearchProductsAsync(name);
 
         // Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), $"...");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
         Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
 
         var products = response.Data!.Data;
@@ -23,14 +24,13 @@ public class SearchProductsTests : ApiTestBase
     [Test]
     public async Task SearchProducts_ByNonExistentName_ReturnsEmptyList()
     {
-        //Arrange
+        //Act
         var response = await Api.Products.SearchProductsAsync("invalid_name");
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
         Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
 
         //Act
-        var productsList = response.Data.Data!;
+        var productsList = response.Data!.Data;
 
         //Assert
         Assert.That(productsList, Is.Empty);
