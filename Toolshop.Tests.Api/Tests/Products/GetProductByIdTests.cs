@@ -25,7 +25,7 @@ public class GetProductByIdTests : ApiTestBase
         //Assert
         Assert.That(productByIdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK),
             productByIdResponse.Describe());
-        Assert.That(response.Data, Is.Not.Null);
+        Assert.That(productByIdResponse.Data, Is.Not.Null);
 
         var productById = productByIdResponse.Data!;
         using (Assert.EnterMultipleScope())

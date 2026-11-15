@@ -41,7 +41,6 @@ public class AuthTests : ApiTestBase
             await Api.Auth.LoginAsync(email, TestConfig.Settings.Customer.Password);
 
         //Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized),
-            $"response code: {response.StatusCode}, error message: {response.ErrorMessage}, content: {response.Content}");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized), response.Describe());
     }
 }
