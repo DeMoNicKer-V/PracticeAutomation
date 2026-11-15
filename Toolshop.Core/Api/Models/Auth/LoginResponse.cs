@@ -8,8 +8,8 @@ public record LoginResponse
     public required string AccessToken { get; init; }
 
     [JsonPropertyName("token_type")]
-    public required string TokenType { get; init; } = "Bearer";
+    public required string TokenType { get; init; }
 
     [JsonPropertyName("expires_in")]
-    public required int TokenExpiresIn { get; init; } = 300;
+    public required int TokenExpiresIn { get; init; }
 }

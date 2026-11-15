@@ -2,5 +2,5 @@
 
 public static class ErrorsText
 {
-    public static readonly string ItemNotFound = "Requested item not found";
+    public const string ItemNotFound = "Requested item not found";
 }

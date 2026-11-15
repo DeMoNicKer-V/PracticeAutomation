@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Toolshop.Tests.Api.Tests;
+namespace Toolshop.Tests.Api.Tests.Products;
 
 public class GetProductsTests : ApiTestBase
 {
@@ -12,10 +12,11 @@ public class GetProductsTests : ApiTestBase
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"{response.ErrorMessage}\n{response.Content}");
-        Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
-
+            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
+        Assert.That(response.Data, Is.Not.Null);
         var page = response.Data!;
+        Assert.That(page.Data, Is.Empty);
+
         using (Assert.EnterMultipleScope())
         {
             Assert.That(page.CurrentPage, Is.EqualTo(1));
@@ -25,17 +26,24 @@ public class GetProductsTests : ApiTestBase
     }
 
     [Test]
-    public async Task GetProducts_999Page_ReturnsEmptyPage()
+    public async Task GetProducts_LastPagePlusOne_ReturnsEmptyPage()
     {
+        //Arrange
+        var firstResponse = await Api.Products.GetProductsAsync();
+        Assert.That(firstResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK),
+            $"response code: {firstResponse.StatusCode},  response message: {firstResponse.ErrorMessage},  content: {firstResponse.Content}");
+        Assert.That(firstResponse.Data, Is.Not.Null, firstResponse.ErrorMessage);
+        var lastPage = firstResponse.Data!.LastPage;
+
         //Act
-        var response = await Api.Products.GetProductsAsync(999);
+        var secondResponse = await Api.Products.GetProductsAsync(lastPage + 1);
 
         //Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
+        Assert.That(secondResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK),
+            $"response code: {secondResponse.StatusCode},  response message: {secondResponse.ErrorMessage},  content: {secondResponse.Content}");
 
-        Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
-        Assert.That(response.Data.Data, Is.Empty);
+        Assert.That(secondResponse.Data, Is.Not.Null, secondResponse.ErrorMessage);
+        Assert.That(secondResponse.Data!.Data, Is.Empty);
     }
 
     [TestCase(0)]
@@ -47,7 +55,7 @@ public class GetProductsTests : ApiTestBase
 
         //Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"{response.ErrorException}/n{response.Content}");
+            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
         Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
         Assert.That(response.Data.CurrentPage, Is.EqualTo(1));
     }

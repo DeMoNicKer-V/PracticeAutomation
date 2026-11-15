@@ -2,7 +2,7 @@
 using Toolshop.Core.Api.Constants;
 using Toolshop.Core.Api.Extensions;
 
-namespace Toolshop.Tests.Api.Tests;
+namespace Toolshop.Tests.Api.Tests.Products;
 
 public class GetProductByIdTests : ApiTestBase
 {
@@ -29,9 +29,9 @@ public class GetProductByIdTests : ApiTestBase
         //Assert
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(productById.Id, Is.EqualTo(firstProduct.Id), "Product's ids are equal");
-            Assert.That(productById.Name, Is.EqualTo(firstProduct.Name), "Product's names are not equal");
-            Assert.That(productById.Price, Is.EqualTo(firstProduct.Price), "Product's prices are not equal");
+            Assert.That(productById.Id, Is.EqualTo(firstProduct.Id));
+            Assert.That(productById.Name, Is.EqualTo(firstProduct.Name));
+            Assert.That(productById.Price, Is.EqualTo(firstProduct.Price));
         }
     }
 

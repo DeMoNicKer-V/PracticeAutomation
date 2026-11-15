@@ -16,14 +16,22 @@ public class AuthTests : ApiTestBase
         var response =
             await Api.Auth.LoginAsync(userEmail, userPassword);
 
+        // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
             $"response code: {response.StatusCode}, error message: {response.ErrorMessage}, content: {response.Content}");
         Assert.That(response.Data, Is.Not.Null);
-        Assert.That(response.Data.AccessToken, Is.Not.Null);
+
+        var token = response.Data!;
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(token.AccessToken, Is.Not.Empty);
+            Assert.That(token.TokenType, Is.EqualTo("bearer"));
+            Assert.That(token.TokenExpiresIn, Is.GreaterThan(0));
+        }
     }
 
     [Test]
-    public async Task Login_WithInvalidEmail_ReturnsUnauthorized()
+    public async Task Login_UnknownEmail_Returns401()
     {
         // Arrange 
         var email = $"user-{Guid.NewGuid():N}@example.com";
