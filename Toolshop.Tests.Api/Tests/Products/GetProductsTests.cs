@@ -32,13 +32,14 @@ public class GetProductsTests : ApiTestBase
 
         //Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"{response.ErrorException}/n{response.Content}");
+            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}");
+
         Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
         Assert.That(response.Data.Data, Is.Empty);
     }
 
     [TestCase(0)]
-    [TestCase(1)]
+    [TestCase(-1)]
     public async Task GetProducts_InvalidPageNumber_ReturnsFirstPage(int page)
     {
         //Act
@@ -51,26 +52,3 @@ public class GetProductsTests : ApiTestBase
         Assert.That(response.Data.CurrentPage, Is.EqualTo(1));
     }
 }
-
-/*
- * Тесты (шаг 4):
-
-Сценарий	Ожидание
-Первая страница списка	200; список не пустой; товаров ≤ PerPage
-Товар по id, взятому из списка	200; имя и цена совпадают
-Несуществующий id	404; понятное сообщение в теле
-Поиск Pliers и hammer ([TestCase])	200; каждое имя содержит запрос без учёта регистра
-Поиск несуществующего слова	200; пустой список
-Дополнительно: page=0 и page=-1	характеризационный тест: фактически возвращается первая страница
-Дополнительно: page=999	посмотрите руками, что приходит, и зафиксируйте
-
-Правила для тестов:
-
-без захардкоженных id;
-структура Arrange → Act → Assert;
-имена в формате Метод_Условие_Ожидание;
-статус проверяется первым, с ErrorMessage и Content в сообщении;
-несколько проверок одного ответа — через Assert.EnterMultipleScope().
-
-Бонус: AuthClient + тесты на успешный логин и на 401. Негативный кейс — только со случайным e-mail.
- */

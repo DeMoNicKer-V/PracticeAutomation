@@ -2,7 +2,7 @@
 using Toolshop.Core.Api.Models.Common;
 using Toolshop.Core.Api.Models.Products;
 
-namespace Toolshop.Core.Api.Clients;
+namespace Toolshop.Core.Clients;
 
 public sealed class ProductsClient
 {

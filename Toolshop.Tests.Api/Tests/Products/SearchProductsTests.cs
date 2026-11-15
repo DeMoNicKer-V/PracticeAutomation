@@ -19,11 +19,16 @@ public class SearchProductsTests : ApiTestBase
         Assert.That(productsList, Is.Not.Empty);
 
         //Assert
-        foreach (var product in productsList) Assert.That(product.Name, Does.Contain(name).IgnoreCase);
+
+        //NotOK
+        /*foreach (var product in productsList) Assert.That(product.Name, Does.Contain(name).IgnoreCase);*/
+
+        //OK
+        Assert.That(productsList.Select(p => p.Name), Has.All.Contains(name).IgnoreCase);
     }
 
     [Test]
-    public async Task SerchProdocts_ByNonExistentName_ReturnsEmptyList()
+    public async Task SerchProducts_ByNonExistentName_ReturnsEmptyList()
     {
         //Arrange
         var response = await Api.Products.SearchProductsAsync("invalid_name");
@@ -38,24 +43,3 @@ public class SearchProductsTests : ApiTestBase
         Assert.That(productsList, Is.Empty);
     }
 }
-
-/*
- * Тесты (шаг 4):
-
-Сценарий	Ожидание
-Первая страница списка	200; список не пустой; товаров ≤ PerPage
-Товар по id, взятому из списка	200; имя и цена совпадают
-Несуществующий id	404; понятное сообщение в теле
-Поиск Pliers и hammer ([TestCase])	200; каждое имя содержит запрос без учёта регистра
-Поиск несуществующего слова	200; пустой список
-Дополнительно: page=0 и page=-1	характеризационный тест: фактически возвращается первая страница
-Дополнительно: page=999	посмотрите руками, что приходит, и зафиксируйте
-
-Правила для тестов:
-
-без захардкоженных id;
-структура Arrange → Act → Assert;
-имена в формате Метод_Условие_Ожидание;
-статус проверяется первым, с ErrorMessage и Content в сообщении;
-несколько проверок одного ответа — через Assert.EnterMultipleScope().
-*/

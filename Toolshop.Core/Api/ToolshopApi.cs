@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using RestSharp.Serializers;
 using RestSharp.Serializers.Json;
-using Toolshop.Core.Api.Clients;
+using Toolshop.Core.Clients;
 
 namespace Toolshop.Core.Api;
 
@@ -20,9 +20,11 @@ public sealed class ToolshopApi : IDisposable
             options,
             configureSerialization: s => s.UseOnlySerializer(() => new SystemTextJsonSerializer()));
         Products = new ProductsClient(_client);
+        Auth = new AuthClient(_client);
     }
 
     public ProductsClient Products { get; }
+    public AuthClient Auth { get; }
 
     public void Dispose()
     {
