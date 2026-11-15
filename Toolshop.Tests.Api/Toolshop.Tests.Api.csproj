@@ -24,4 +24,8 @@
         <ProjectReference Include="..\Toolshop.Core\Toolshop.Core.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Assertions\"/>
+    </ItemGroup>
+
 </Project>

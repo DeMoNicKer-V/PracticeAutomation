@@ -9,5 +9,6 @@ public class GlobalSetup
     public void ValidateConfig()
     {
         _ = TestConfig.Settings;
+        TestContext.Progress.WriteLine($"API: {TestConfig.Settings.ApiBaseUrl}");
     }
 }

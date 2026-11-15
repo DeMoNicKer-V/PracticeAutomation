@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Toolshop.Core.Api.Models.Brands;
 using Toolshop.Core.Api.Models.Categories;
+using Toolshop.Core.Api.Utils;
 
 namespace Toolshop.Core.Api.Models.Products;
 
@@ -19,18 +20,22 @@ public record Product
     public decimal Price { get; init; }
 
     [JsonPropertyName("is_location_offer")]
+    [JsonConverter(typeof(NumberToBoolConverter))]
     public bool IsLocationOffer { get; init; }
 
     [JsonPropertyName("is_rental")]
+    [JsonConverter(typeof(NumberToBoolConverter))]
     public bool IsRental { get; init; }
 
     [JsonPropertyName("in_stock")]
+    [JsonConverter(typeof(NumberToBoolConverter))]
     public bool InStock { get; init; }
 
     [JsonPropertyName("co2_rating")]
     public string? Co2Rating { get; init; }
 
     [JsonPropertyName("is_eco_friendly")]
+    [JsonConverter(typeof(NumberToBoolConverter))]
     public bool IsEcoFriendly { get; init; }
 
     [JsonPropertyName("brand")]

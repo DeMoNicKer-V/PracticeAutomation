@@ -33,11 +33,11 @@ public sealed class ProductsClient
         return _client.ExecuteAsync<PagedResponse<Product>>(request, ct);
     }
 
-    public Task<RestResponse<PagedResponse<Product>>> GetProductByIdAsync(int id, CancellationToken ct = default)
+    public Task<RestResponse<Product>> GetProductByIdAsync(string id, CancellationToken ct = default)
     {
         var request = new RestRequest("products/{id}")
             .AddUrlSegment("id", id);
 
-        return _client.ExecuteAsync<PagedResponse<Product>>(request, ct);
+        return _client.ExecuteAsync<Product>(request, ct);
     }
 }

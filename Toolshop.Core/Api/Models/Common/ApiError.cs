@@ -1,3 +1,9 @@
-﻿namespace Toolshop.Core.Api.Models.Common;
+﻿using System.Text.Json.Serialization;
 
-public record ApiError();
+namespace Toolshop.Core.Api.Models.Common;
+
+public record ApiError
+{
+    [JsonPropertyName("message")]
+    public string? Message { get; init; }
+}
