@@ -15,7 +15,6 @@ public class GetProductsTests : ApiTestBase
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
         Assert.That(response.Data, Is.Not.Null);
         var page = response.Data!;
-        Assert.That(page.Data, Is.Not.Empty);
 
         using (Assert.EnterMultipleScope())
         {

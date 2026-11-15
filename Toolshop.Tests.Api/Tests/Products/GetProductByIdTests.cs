@@ -12,7 +12,9 @@ public class GetProductByIdTests : ApiTestBase
         //Arrange
         var response = await Api.Products.GetProductsAsync();
 
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
+        Assert.That(response.Data, Is.Not.Null);
+
         var productsList = response.Data!;
         Assert.That(productsList.Data, Is.Not.Empty);
         var firstProduct = productsList.Data[0];
@@ -23,6 +25,7 @@ public class GetProductByIdTests : ApiTestBase
         //Assert
         Assert.That(productByIdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK),
             productByIdResponse.Describe());
+        Assert.That(response.Data, Is.Not.Null);
 
         var productById = productByIdResponse.Data!;
         using (Assert.EnterMultipleScope())
@@ -44,7 +47,7 @@ public class GetProductByIdTests : ApiTestBase
         var response = await Api.Products.GetProductByIdAsync(nonExistentId);
 
         //Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound), response.Describe);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound), response.Describe());
         Assert.That(response.GetError()?.Message, Is.EqualTo(ErrorsText.ItemNotFound));
     }
 }

@@ -29,10 +29,8 @@ public class SearchProductsTests : ApiTestBase
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
         Assert.That(response.Data, Is.Not.Null, response.ErrorMessage);
 
-        //Act
-        var productsList = response.Data!.Data;
-
         //Assert
+        var productsList = response.Data!.Data;
         Assert.That(productsList, Is.Empty);
     }
 }

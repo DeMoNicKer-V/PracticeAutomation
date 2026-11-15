@@ -16,6 +16,6 @@ public static class RestResponseExtensions
     public static string Describe(this RestResponse response)
     {
         return
-            $"response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}";
+            $" response uri: {response.ResponseUri}, response code: {response.StatusCode},  response message: {response.ErrorMessage},  content: {response.Content}";
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Toolshop.Core.Api.Extensions;
 using Toolshop.Core.Config;
 
 namespace Toolshop.Tests.Api.Tests.Auth;
@@ -17,8 +18,7 @@ public class AuthTests : ApiTestBase
             await Api.Auth.LoginAsync(userEmail, userPassword);
 
         // Assert
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK),
-            $"response code: {response.StatusCode}, error message: {response.ErrorMessage}, content: {response.Content}");
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), response.Describe());
         Assert.That(response.Data, Is.Not.Null);
 
         var token = response.Data!;
